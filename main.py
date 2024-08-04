@@ -12,7 +12,7 @@ from aiogram.filters import Command
 from gen_message import generate_messange
 
 # Открываем файл в режиме чтения
-with open('senior/tg_api.txt', 'r') as file:
+with open('tg_api.txt', 'r') as file:
     # Читаем содержимое файла
     TOKEN = file.read()
 

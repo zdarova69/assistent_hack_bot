@@ -1,13 +1,26 @@
 from gigachat import GigaChat
+from gigachat.models import Chat, Messages, MessagesRole
 import asyncio
 
 # Открываем файл в режиме чтения
-with open('senior/api_gigachat.txt', 'r') as file:
+with open('api_gigachat.txt', 'r') as file:
     # Читаем содержимое файла
     content = file.read()
 
 # Извлекаем значение credentials из содержимого файла
 credentials = content
+
+
+payload = Chat(
+    messages=[
+        Messages(
+            role=MessagesRole.SYSTEM,
+            content="Ты бот для помощи команде в хакатоне."
+        )
+    ],
+    temperature=0.7,
+    max_tokens=100,
+)
 
 # Выводим значение переменной credentials для проверки
 # print(credentials)
@@ -21,6 +34,7 @@ async def generate_messange(prompt, api=credentials) -> str:
     giga = GigaChat(credentials=api, 
                     # model="GigaChat-Pro", 
                     verify_ssl_certs=False)
-    response = giga.chat(prompt)
+    payload.messages.append(Messages(role=MessagesRole.USER, content=prompt))
+    response = giga.chat(payload)
     return response.choices[0].message.content
 # print(asyncio.run(generate_messange(prompt='напиши алгоритм сортировки пузырьком на python')))
